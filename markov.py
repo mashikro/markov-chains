@@ -10,12 +10,11 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    # your code goes here
-
     file_name = open(file_path) # output = file object
     file_as_string = file_name.read() # output = string 
 
     return file_as_string
+
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -44,10 +43,6 @@ def make_chains(text_string):
 
     chains = {}
 
-    # your code goes here
-
-    # file_as_string = open_and_read_file(file_path)
-
     word_list = text_string.split()
 
     for i in range(len(word_list)-2):
@@ -56,44 +51,38 @@ def make_chains(text_string):
         # check if item in dict if key not assign an (empty list + [word_list[i+2]]) to a key
         chains[key] = chains.get(key, []) + [word_list[i+2]]
 
-    # for key, value in chains.items():
-    #     print(f'{key}: {value}')
-
     return chains
 
-# make_chains(open_and_read_file('green-eggs.txt'))
 
 def make_text(chains):
     """Return text from chains."""
 
     words = []
 
-    # your code goes here
-    initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list
+    initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
     words.extend(list(initial_key))
 
     #while loop - until no more key left in dict
     while not (words[-1] == 'am?'):
-        #new_key = second word in first key + random word from its value
+        # new_key = last 2 words from the populated words list
+        new_key = tuple(words[-2:]) #output is a tuple
+        # pick a random word using generated key in chains dict to access list of values
         random_word = random.choice(chains[new_key])
-        words.append(random_word)  #add random to words list 
-        #look_up the new_key in dict and if it exists we repeat above line
-        new_key = tuple(words[-2:])
-
+        # add random_word to words list 
+        words.append(random_word)  
 
     return " ".join(words)
 
-make_text(make_chains(open_and_read_file('green-eggs.txt')))
 
-# input_path = "green-eggs.txt"
+input_path = "green-eggs.txt"
 
-# # Open the file and turn it into one long string
-# input_text = open_and_read_file(input_path)
+# Open the file and turn it into one long string
+input_text = open_and_read_file(input_path)
 
-# # Get a Markov chain
-# chains = make_chains(input_text)
+# Get a Markov chain
+chains = make_chains(input_text)
 
-# # Produce random text
-# random_text = make_text(chains)
+# Produce random text
+random_text = make_text(chains)
 
-# print(random_text)
+print(random_text)
