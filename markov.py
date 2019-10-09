@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 import random 
+import sys
 
 
 def open_and_read_file(file_path):
@@ -12,6 +13,7 @@ def open_and_read_file(file_path):
 
     file_name = open(file_path) # output = file object
     file_as_string = file_name.read() # output = string 
+    file_name.close()
 
     return file_as_string
 
@@ -92,9 +94,11 @@ def make_text(chains, n):
     # initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
     initial_key = find_initial_key(chains)
     words.extend(list(initial_key))
+    end_here = tuple(words[-n:])[-1][-1] # last character of last item in key
+    print('LOOK:',end_here)
 
     #while loop - until no more key left in dict
-    while tuple(words[-n:]) in chains:
+    while tuple(words[-n:]) in chains and end_here.isalpha():
         # new_key = last n words from the populated words list
         new_key = tuple(words[-n:]) #output is a tuple
         # pick a random word using generated key in chains dict to access list of values
@@ -107,16 +111,16 @@ def make_text(chains, n):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = sys.argv[2]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text, 4)
+chains = make_chains(input_text, 2)
 
 # Produce random text
-random_text = make_text(chains, 4)
+random_text = make_text(chains, 2)
 
 print(random_text)
 
