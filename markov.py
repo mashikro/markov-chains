@@ -16,7 +16,7 @@ def open_and_read_file(file_path):
     return file_as_string
 
 
-def make_chains(text_string):
+def make_chains(text_string, n):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -45,11 +45,11 @@ def make_chains(text_string):
 
     word_list = text_string.split()
 
-    for i in range(len(word_list)-2):
+    for i in range(len(word_list)-n):
         # slice from i to i + 2 ==> list of 2 words. make that into a tuple
-        key = tuple(word_list[i:i+2])
+        key = tuple(word_list[i:i+n])
         # check if item in dict if key not assign an (empty list + [word_list[i+2]]) to a key
-        chains[key] = chains.get(key, []) + [word_list[i+2]]
+        chains[key] = chains.get(key, []) + [word_list[i+n]]
 
     for key, value in chains.items():
         print(f'{key}: {value}')
@@ -57,18 +57,18 @@ def make_chains(text_string):
     return chains
 
 
-def make_text(chains):
+def make_text(chains, n):
     """Return text from chains."""
 
     words = []
 
-    initial_key = random.choice(chains.keys()) #random.choice iterates over a list of 2 item tuples
+    initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
     words.extend(list(initial_key))
 
     #while loop - until no more key left in dict
-    while tuple(words[-2:]) in chains:
-        # new_key = last 2 words from the populated words list
-        new_key = tuple(words[-2:]) #output is a tuple
+    while tuple(words[-n:]) in chains:
+        # new_key = last n words from the populated words list
+        new_key = tuple(words[-n:]) #output is a tuple
         # pick a random word using generated key in chains dict to access list of values
         # if key exists in dict, pick a random value of that key, and assign it to random_word
         random_word = random.choice(chains[new_key])
@@ -79,16 +79,16 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = "gettysburg.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_text, 4)
 
 # Produce random text
-random_text = make_text(chains)
+random_text = make_text(chains, 4)
 
 print(random_text)
 
