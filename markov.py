@@ -4,18 +4,21 @@ import random
 import sys
 
 
-def open_and_read_file(file_path):
+def open_and_read_file(file_path1, file_path2):
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
 
-    file_name = open(file_path) # output = file object
-    file_as_string = file_name.read() # output = string 
-    file_name.close()
+    file_name1 = open(file_path1) # output = file object
+    file_name2 = open(file_path2)
+    file1_as_string = file_name1.read() # output = string 
+    file2_as_string = file_name2.read()
+    file_name1.close()
+    file_name2.close()
 
-    return file_as_string
+    return file1_as_string + file2_as_string
 
 
 def make_chains(text_string, n):
@@ -111,10 +114,12 @@ def make_text(chains, n):
     return " ".join(words)
 
 
-input_path = sys.argv[2]
+input_path_1 = sys.argv[1]
+input_path_2 = sys.argv[2]
+
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = open_and_read_file(input_path_1, input_path_2)
 
 # Get a Markov chain
 chains = make_chains(input_text, 2)
