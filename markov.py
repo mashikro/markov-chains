@@ -57,12 +57,40 @@ def make_chains(text_string, n):
     return chains
 
 
+def find_initial_key(chains):
+    '''Returns a string that is title cased'''
+    
+    title_case_word = '' 
+
+    for key in list(chains.keys()):
+        if key[0] == key[0].title():
+            title_case_word = key[0]
+            break
+
+
+    # print('LOOK HERE:', title_case_word)
+
+
+    # use the title case word to search dict for any key whose 1st item is that word
+    initial_key = tuple()
+
+    for key in list(chains.keys()):
+        if key[0] == title_case_word:
+            initial_key = key
+
+    # print('LOOK HERE:',initial_key)
+
+    return initial_key
+
+# find_initial_key(make_chains(open_and_read_file("green-eggs.txt"),2))
+
 def make_text(chains, n):
     """Return text from chains."""
 
     words = []
 
-    initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
+    # initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
+    initial_key = find_initial_key(chains)
     words.extend(list(initial_key))
 
     #while loop - until no more key left in dict
@@ -79,7 +107,7 @@ def make_text(chains, n):
     return " ".join(words)
 
 
-input_path = "gettysburg.txt"
+input_path = "green-eggs.txt"
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
