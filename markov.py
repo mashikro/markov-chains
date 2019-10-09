@@ -62,7 +62,7 @@ def make_text(chains):
 
     words = []
 
-    initial_key = random.choice(list(chains.keys())) #random.choice iterates over a list of 2 item tuples
+    initial_key = random.choice(chains.keys()) #random.choice iterates over a list of 2 item tuples
     words.extend(list(initial_key))
 
     #while loop - until no more key left in dict
