@@ -51,6 +51,9 @@ def make_chains(text_string):
         # check if item in dict if key not assign an (empty list + [word_list[i+2]]) to a key
         chains[key] = chains.get(key, []) + [word_list[i+2]]
 
+    for key, value in chains.items():
+        print(f'{key}: {value}')
+
     return chains
 
 
@@ -63,13 +66,15 @@ def make_text(chains):
     words.extend(list(initial_key))
 
     #while loop - until no more key left in dict
-    while not (words[-1] == 'am?'):
+    while tuple(words[-2:]) in chains:
         # new_key = last 2 words from the populated words list
         new_key = tuple(words[-2:]) #output is a tuple
         # pick a random word using generated key in chains dict to access list of values
+        # if key exists in dict, pick a random value of that key, and assign it to random_word
         random_word = random.choice(chains[new_key])
-        # add random_word to words list 
+            # add random_word to words list 
         words.append(random_word)  
+       
 
     return " ".join(words)
 
@@ -86,3 +91,5 @@ chains = make_chains(input_text)
 random_text = make_text(chains)
 
 print(random_text)
+
+# make_chains(open_and_read_file('gettysburg.txt'))
